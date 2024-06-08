@@ -5,7 +5,7 @@ const ProductDetail = ({ productId }) => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://node187822-ecommerce.jelastic.saveincloud.net:13916/products/${productId}`)
+    axios.get(`/products/${productId}`)
       .then(response => {
         setProduct(response.data);
       })

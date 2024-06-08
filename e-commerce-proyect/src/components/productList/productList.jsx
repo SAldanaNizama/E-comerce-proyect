@@ -7,7 +7,7 @@ const ProductList = ({ onSelectProduct }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://node187822-ecommerce.jelastic.saveincloud.net:13916/products')
+    axios.get('/products')
       .then(response => {
         setProducts(response.data);
       })
