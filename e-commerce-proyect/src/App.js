@@ -4,7 +4,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      <h1>my proyect</h1>
+      <h1>My proyect</h1>
       </header>
     </div>
   );
