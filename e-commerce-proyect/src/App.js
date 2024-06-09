@@ -9,7 +9,7 @@ function App() {
         <header className="App-header">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path='/detail' element={<ProductDetail/>}/>
+            <Route path='/product/:id' element={<ProductDetail/>}/>
           </Routes>
         </header>
         <Footer />
@@ -19,3 +19,4 @@ function App() {
 }
 
 export default App;
+
