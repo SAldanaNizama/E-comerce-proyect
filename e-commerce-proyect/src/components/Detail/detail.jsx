@@ -5,25 +5,27 @@ import LoadingSpinner from '../loading/loading';
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`/products/${id}`)
+    axios.get(`https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/${id}`)
       .then(response => {
         setProduct(response.data);
+        setLoading(false);
       })
       .catch(error => {
         setError(error);
-        console.error('There has been a problem with your axios operation:', error);
+        setLoading(false);
       });
   }, [id]);
 
-  if (error) {
-    return <div className="text-center mt-10 text-red-500">Error loading product: {error.message}</div>;
+  if (loading) {
+    return <LoadingSpinner/>
   }
 
-  if (!product) {
-    return <LoadingSpinner/>
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (

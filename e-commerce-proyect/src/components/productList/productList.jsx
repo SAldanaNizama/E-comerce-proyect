@@ -15,7 +15,7 @@ const ProductList = ({ onSelectProduct }) => {
   const [searchError, setSearchError] = useState(false);
 
   useEffect(() => {
-    axios.get('/products')
+    axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/products')
       .then(response => {
         setProducts(response.data);
         setLoading(false);
