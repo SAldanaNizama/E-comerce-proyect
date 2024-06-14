@@ -1,7 +1,9 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import LoadingSpinner from '../loading/loading';
 
+<LoadingSpinner/>
 const Home = () => {
   return (
     <div className="container mx-auto p-4">
