@@ -1,18 +1,21 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProductList from '../productList/productList';
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const handleSelectProduct = (productId) => {
-    navigate(`/product/${productId}`);
+  const handleViewProducts = () => {
+    navigate('/products');
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">Productos</h1>
-      <ProductList onSelectProduct={handleSelectProduct} />
+      <button
+        onClick={handleViewProducts}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        View Products
+      </button>
     </div>
   );
 };
