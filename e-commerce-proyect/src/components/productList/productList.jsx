@@ -4,8 +4,7 @@ import ProductCard from '../card/card';
 import LoadingSpinner from '../loading/loading';
 import Pagination from '../pagination/pagination';
 import SearchBar from '../searchBar/searchBar';
-import SortBar from '../sortBar/SortBar';
-import FilterBar from '../filters/FilterBar';
+import SortBar from "../sortBar/SortBar";
 
 const ProductList = ({ onSelectProduct }) => {
   const [products, setProducts] = useState([]);
@@ -16,23 +15,9 @@ const ProductList = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [sortOption, setSortOption] = useState('');
-  const [filter, setFilter] = useState({ type: '', value: '' });
 
   useEffect(() => {
-    fetchProducts();
-  }, [filter]);
-
-  const fetchProducts = () => {
-    setLoading(true);
-    let url = 'https://node187822-ecommerce.jelastic.saveincloud.net:13916/products';
-
-    if (filter.type === 'subcategory') {
-      url = `https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/subcategory/name/${filter.value}`;
-    } else if (filter.type === 'brand') {
-      url = `https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/marca/${filter.value}`;
-    }
-
-    axios.get(url)
+    axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/products')
       .then(response => {
         setProducts(response.data);
         setLoading(false);
@@ -42,19 +27,15 @@ const ProductList = ({ onSelectProduct }) => {
         setLoading(false);
         console.error('There has been a problem with your axios operation:', error);
       });
-  };
+  }, []);
 
   const handleSearchChange = (value) => {
-    setSearchTerm(value);
-    setCurrentPage(1);
+    setSearchTerm(value); 
+    setCurrentPage(1); 
   };
 
   const handleSortChange = (value) => {
     setSortOption(value);
-  };
-
-  const handleFilterChange = (filter) => {
-    setFilter(filter);
   };
 
   const sortProducts = (products) => {
@@ -104,15 +85,12 @@ const ProductList = ({ onSelectProduct }) => {
       <div className="mb-4">
         <SortBar sortOption={sortOption} onSortChange={handleSortChange} />
       </div>
-      <div className="mb-4">
-        <FilterBar filterOption={filter.type} onFilterChange={handleFilterChange} />
-      </div>
       
       {searchError ? (
         <div className="text-center mt-4 flex items-center justify-center">
           <div className="max-w-full md:max-w-xl lg:max-w-2xl flex items-center">
             <img src="/noSeEncontro.jpg" alt="No se encontraron productos" className="max-w-1/2 h-auto mb-4 mr-4" />
-            <p className="text-xl font-bold">NO SE ENCONTRO NI MIERDA</p>
+            <p className="text-xl font-bold">Did not find the product you are looking for</p>
           </div>
         </div>
       ) : (
