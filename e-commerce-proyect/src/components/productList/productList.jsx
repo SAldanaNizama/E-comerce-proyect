@@ -4,6 +4,7 @@ import ProductCard from '../card/card';
 import LoadingSpinner from '../loading/loading';
 import Pagination from '../pagination/pagination';
 import SearchBar from '../searchBar/searchBar';
+import SortBar from "../sortBar/SortBar";
 
 const ProductList = ({ onSelectProduct }) => {
   const [products, setProducts] = useState([]);
@@ -13,6 +14,7 @@ const ProductList = ({ onSelectProduct }) => {
   const [productsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
+  const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
     axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/products')
@@ -32,13 +34,34 @@ const ProductList = ({ onSelectProduct }) => {
     setCurrentPage(1); 
   };
 
+  const handleSortChange = (value) => {
+    setSortOption(value);
+  };
+
+  const sortProducts = (products) => {
+    switch (sortOption) {
+      case 'nameAsc':
+        return products.sort((a, b) => a.name.localeCompare(b.name));
+      case 'nameDesc':
+        return products.sort((a, b) => b.name.localeCompare(a.name));
+      case 'priceAsc':
+        return products.sort((a, b) => a.price - b.price);
+      case 'priceDesc':
+        return products.sort((a, b) => b.price - a.price);
+      default:
+        return products;
+    }
+  };
+
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const sortedProducts = sortProducts(filteredProducts);
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -58,6 +81,9 @@ const ProductList = ({ onSelectProduct }) => {
     <div>
       <div className="mb-4">
         <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
+      </div>
+      <div className="mb-4">
+        <SortBar sortOption={sortOption} onSortChange={handleSortChange} />
       </div>
       
       {searchError ? (
