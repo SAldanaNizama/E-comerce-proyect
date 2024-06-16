@@ -5,7 +5,7 @@ import LoadingSpinner from '../loading/loading';
 import Pagination from '../pagination/pagination';
 import SearchBar from '../searchBar/searchBar';
 import SortBar from "../sortBar/SortBar";
-import FilterBar from "../filters/FilterBar"; // Asegúrate de importar FilterBar correctamente
+import FilterBar from '../filters/FilterBar';
 
 const ProductList = ({ onSelectProduct }) => {
   const [products, setProducts] = useState([]);
@@ -16,10 +16,17 @@ const ProductList = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [sortOption, setSortOption] = useState('');
-  const [marcaFilter, setMarcaFilter] = useState(null);
+  const [filterOption, setFilterOption] = useState({});
 
   useEffect(() => {
-    axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/products')
+    let url = 'https://node187822-ecommerce.jelastic.saveincloud.net:13916/products';
+    if (filterOption.type === 'brand') {
+      url = `https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/marca/${filterOption.value}`;
+    } else if (filterOption.type === 'subcategory') {
+      url = `https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/subcategory/${filterOption.value}`;
+    }
+
+    axios.get(url)
       .then(response => {
         setProducts(response.data);
         setLoading(false);
@@ -29,30 +36,19 @@ const ProductList = ({ onSelectProduct }) => {
         setLoading(false);
         console.error('There has been a problem with your axios operation:', error);
       });
-  }, []);
-
-  useEffect(() => {
-    if (marcaFilter !== null) {
-      axios.get(`https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/marca/${marcaFilter}`)
-        .then(response => {
-          setProducts(response.data);
-          setLoading(false);
-        })
-        .catch(error => {
-          setError(error);
-          setLoading(false);
-          console.error('Error fetching filtered products:', error);
-        });
-    }
-  }, [marcaFilter]);
+  }, [filterOption]);
 
   const handleSearchChange = (value) => {
-    setSearchTerm(value);
-    setCurrentPage(1);
+    setSearchTerm(value); 
+    setCurrentPage(1); 
   };
 
   const handleSortChange = (value) => {
     setSortOption(value);
+  };
+
+  const handleFilterChange = (filter) => {
+    setFilterOption(filter);
   };
 
   const sortProducts = (products) => {
@@ -86,10 +82,6 @@ const ProductList = ({ onSelectProduct }) => {
     setSearchError(filteredProducts.length === 0);
   }, [filteredProducts]);
 
-  const handleFilterChange = (filter) => {
-    setMarcaFilter(filter.value);
-  };
-
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -106,8 +98,10 @@ const ProductList = ({ onSelectProduct }) => {
       <div className="mb-4">
         <SortBar sortOption={sortOption} onSortChange={handleSortChange} />
       </div>
-
-      <FilterBar onFilterChange={handleFilterChange} /> 
+      <div className="mb-4">
+        <FilterBar onFilterChange={handleFilterChange} />
+      </div>
+      
       {searchError ? (
         <div className="text-center mt-4 flex items-center justify-center">
           <div className="max-w-full md:max-w-xl lg:max-w-2xl flex items-center">
@@ -123,7 +117,7 @@ const ProductList = ({ onSelectProduct }) => {
         </div>
       )}
 
-      <div className="flex-grow">
+      <div className="flex-grow"> 
         <Pagination currentPage={currentPage} totalPages={Math.ceil(filteredProducts.length / productsPerPage)} onPageChange={paginate} />
       </div>
     </div>
