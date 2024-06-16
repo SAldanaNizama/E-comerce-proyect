@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const FilterBar = ({ onFilterChange }) => {
-  const [filterOption, setFilterOption] = useState('');
-  const [filterValue, setFilterValue] = useState('');
   const [marcas, setMarcas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filterValue, setFilterValue] = useState('');
 
   useEffect(() => {
     axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/marcas')
@@ -22,10 +21,10 @@ const FilterBar = ({ onFilterChange }) => {
   }, []);
 
   const handleFilterChange = () => {
-  if (filterOption && filterValue) {
-    onFilterChange({ type: filterOption, value: filterValue });
-  }
-};
+    if (filterValue) {
+      onFilterChange({ type: 'marca', value: filterValue });
+    }
+  };
 
   if (loading) {
     return <div>Loading brands...</div>;
@@ -39,25 +38,14 @@ const FilterBar = ({ onFilterChange }) => {
     <div className="filter-bar mb-4">
       <label htmlFor="filter">Filter by: </label>
       <select
-        id="filter"
-        value={filterOption}
-        onChange={(e) => setFilterOption(e.target.value)}
+        value={filterValue}
+        onChange={(e) => setFilterValue(e.target.value)}
       >
-        <option value="">Select</option>
-        <option value="subcategory">Subcategory</option>
-        <option value="brand">Brand</option>
+        <option value="">Select a brand</option>
+        {marcas.map(marca => (
+          <option key={marca.marcaId} value={marca.marcaId}>{marca.name}</option>
+        ))}
       </select>
-      {filterOption === 'brand' && (
-        <select
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
-        >
-          <option value="">Select a brand</option>
-          {marcas.map(marca => (
-            <option key={marca.marcaId} value={marca.name}>{marca.name}</option>
-          ))}
-        </select>
-      )}
       <button onClick={handleFilterChange}>Apply Filter</button>
     </div>
   );

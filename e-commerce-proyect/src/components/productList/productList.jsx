@@ -5,6 +5,7 @@ import LoadingSpinner from '../loading/loading';
 import Pagination from '../pagination/pagination';
 import SearchBar from '../searchBar/searchBar';
 import SortBar from "../sortBar/SortBar";
+import FilterBar from "../filters/FilterBar"; // Asegúrate de importar FilterBar correctamente
 
 const ProductList = ({ onSelectProduct }) => {
   const [products, setProducts] = useState([]);
@@ -15,6 +16,7 @@ const ProductList = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [sortOption, setSortOption] = useState('');
+  const [marcaFilter, setMarcaFilter] = useState(null);
 
   useEffect(() => {
     axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/products')
@@ -29,9 +31,24 @@ const ProductList = ({ onSelectProduct }) => {
       });
   }, []);
 
+  useEffect(() => {
+    if (marcaFilter !== null) {
+      axios.get(`https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/marca/${marcaFilter}`)
+        .then(response => {
+          setProducts(response.data);
+          setLoading(false);
+        })
+        .catch(error => {
+          setError(error);
+          setLoading(false);
+          console.error('Error fetching filtered products:', error);
+        });
+    }
+  }, [marcaFilter]);
+
   const handleSearchChange = (value) => {
-    setSearchTerm(value); 
-    setCurrentPage(1); 
+    setSearchTerm(value);
+    setCurrentPage(1);
   };
 
   const handleSortChange = (value) => {
@@ -69,6 +86,10 @@ const ProductList = ({ onSelectProduct }) => {
     setSearchError(filteredProducts.length === 0);
   }, [filteredProducts]);
 
+  const handleFilterChange = (filter) => {
+    setMarcaFilter(filter.value);
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -85,7 +106,8 @@ const ProductList = ({ onSelectProduct }) => {
       <div className="mb-4">
         <SortBar sortOption={sortOption} onSortChange={handleSortChange} />
       </div>
-      
+
+      <FilterBar onFilterChange={handleFilterChange} /> 
       {searchError ? (
         <div className="text-center mt-4 flex items-center justify-center">
           <div className="max-w-full md:max-w-xl lg:max-w-2xl flex items-center">
