@@ -9,7 +9,7 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      <div className="App flex flex-col min-h-screen">
+      <div className="App flex flex-col min-h-screen bg-transmitir-azulClaro text-futurista-negro">
         <header className="App-header">
           <Navbar />
           <Routes>
@@ -25,5 +25,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

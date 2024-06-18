@@ -15,7 +15,7 @@ const FilterBar = ({ onFilterChange }) => {
         setMarcas(response.data);
         setLoading(false);
       })
-      .catch(error => {
+      .catch(error => { 
         setError(error);
         setLoading(false);
         console.error('Error fetching brands:', error);
