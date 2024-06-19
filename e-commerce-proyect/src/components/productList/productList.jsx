@@ -16,27 +16,31 @@ const ProductList = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [sortOption, setSortOption] = useState('');
-  const [filterOption, setFilterOption] = useState({});
+  const [filterOptions, setFilterOptions] = useState({ brands: [], subcategories: [] });
 
-  useEffect(() => {
+  const fetchProducts = async () => {
+    setLoading(true);
     let url = 'https://node187822-ecommerce.jelastic.saveincloud.net:13916/products';
-    if (filterOption.type === 'brand') {
-      url = `https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/marca/${filterOption.value}`;
-    } else if (filterOption.type === 'subcategory') {
-      url = `https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/subcategory/${filterOption.value}`;
+    if (filterOptions.brands.length > 0 || filterOptions.subcategories.length > 0) {
+      const brandParams = filterOptions.brands.length > 0 ? `brands=${filterOptions.brands.join(',')}` : '';
+      const subcategoryParams = filterOptions.subcategories.length > 0 ? `subcategories=${filterOptions.subcategories.join(',')}` : '';
+      url += `?${brandParams}&${subcategoryParams}`;
     }
 
-    axios.get(url)
-      .then(response => {
-        setProducts(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
-        console.error('There has been a problem with your axios operation:', error);
-      });
-  }, [filterOption]);
+    try {
+      const response = await axios.get(url);
+      setProducts(response.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+      console.error('There has been a problem with your axios operation:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [filterOptions]);
 
   const handleSearchChange = (value) => {
     setSearchTerm(value); 
@@ -47,8 +51,8 @@ const ProductList = ({ onSelectProduct }) => {
     setSortOption(value);
   };
 
-  const handleFilterChange = (filter) => {
-    setFilterOption(filter);
+  const handleFilterChange = (filters) => {
+    setFilterOptions(filters);
   };
 
   const sortProducts = (products) => {
@@ -110,7 +114,7 @@ const ProductList = ({ onSelectProduct }) => {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentProducts.map(product => (
             <ProductCard key={product.id} product={product} onSelect={onSelectProduct} />
           ))}
