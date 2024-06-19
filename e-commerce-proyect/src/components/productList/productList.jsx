@@ -109,7 +109,7 @@ const ProductList = ({ onSelectProduct }) => {
       {searchError ? (
         <div className="text-center mt-4 flex items-center justify-center">
           <div className="max-w-full md:max-w-xl lg:max-w-2xl flex items-center">
-            <img src="/noSeEncontro.jpg" alt="No se encontraron productos" className="max-w-1/2 h-auto mb-4 mr-4" />
+            <img src="/noSeEncontro.png" alt="No se encontraron productos" className="max-w-1/2 h-auto mb-4 mr-4" />
             <p className="text-xl font-bold">Did not find the product you are looking for</p>
           </div>
         </div>
