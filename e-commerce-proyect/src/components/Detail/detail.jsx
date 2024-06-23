@@ -13,7 +13,7 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://node187822-ecommerce.jelastic.saveincloud.net:13916/products/${id}`);
+        const response = await axios.get(`https://e-commerce-test-hqul.onrender.com/products/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
@@ -37,7 +37,7 @@ const ProductDetail = () => {
     <div className="container mx-auto p-4 flex justify-center items-center min-h-screen">
       <div className="bg-white rounded-lg shadow-md p-6 max-w-lg w-full">
         <h2 className="text-3xl font-bold mb-4 text-center">{product.name}</h2>
-        <img src={`https://source.unsplash.com/random/300x300?product,${product.id}`} alt={product.name} className="w-full h-48 object-cover rounded-md mb-4" />
+        <img src={`https://e-commerce-test-hqul.onrender.com/products/${product.images.imageUrl}`} alt={product.name} className="w-full h-48 object-cover rounded-md mb-4" />
         <p className="text-gray-700 mb-4">{product.description}</p>
         <p className="text-lg font-semibold mb-4 text-center">{`$${product.price.toFixed(2)}`}</p>
         <div className="text-gray-700 mb-4">

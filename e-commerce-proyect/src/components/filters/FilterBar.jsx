@@ -10,7 +10,7 @@ const FilterBar = ({ onFilterChange }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/marcas')
+    axios.get('https://e-commerce-test-hqul.onrender.com/marcas')
       .then(response => {
         setMarcas(response.data);
         setLoading(false);
@@ -21,7 +21,7 @@ const FilterBar = ({ onFilterChange }) => {
         console.error('Error fetching brands:', error);
       });
 
-    axios.get('https://node187822-ecommerce.jelastic.saveincloud.net:13916/subcategories')
+    axios.get('https://e-commerce-test-hqul.onrender.com/categories')
       .then(response => {
         setSubcategorias(response.data);
         setLoading(false);
@@ -51,7 +51,7 @@ const FilterBar = ({ onFilterChange }) => {
 
   return (
     <div className="filter-bar mb-4">
-      <label htmlFor="filter">Filter by: </label>
+      <label htmlFor="filter">Filter by:  </label>
       <select
         value={filterOption}
         onChange={(e) => {
