@@ -12,7 +12,7 @@ const ProductList = ({ onSelectProduct }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
+  const [productsPerPage] = useState(12);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [sortOption, setSortOption] = useState('');
@@ -20,7 +20,7 @@ const ProductList = ({ onSelectProduct }) => {
 
   const fetchProducts = async () => {
     setLoading(true);
-    let url = 'https://node187822-ecommerce.jelastic.saveincloud.net:13916/products';
+    let url = 'https://e-commerce-test-hqul.onrender.com/products';
     if (filterOptions.brands.length > 0 || filterOptions.subcategories.length > 0) {
       const brandParams = filterOptions.brands.length > 0 ? `brands=${filterOptions.brands.join(',')}` : '';
       const subcategoryParams = filterOptions.subcategories.length > 0 ? `subcategories=${filterOptions.subcategories.join(',')}` : '';
