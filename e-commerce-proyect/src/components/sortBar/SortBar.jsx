@@ -5,7 +5,7 @@ const SortBar = ({ sortOption, onSortChange }) => {
     <div className="sort-bar mb-4">
       <label htmlFor="sort">Sort by: </label>
       <select id="sort" value={sortOption} onChange={e => onSortChange(e.target.value)}>
-        <option value="">Select</option>
+        <option value="">All</option>
         <option value="nameAsc">Name (A-Z)</option>
         <option value="nameDesc">Name (Z-A)</option>
         <option value="priceAsc">Price (Low to High)</option>
