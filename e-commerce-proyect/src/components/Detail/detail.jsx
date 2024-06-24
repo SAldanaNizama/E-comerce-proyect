@@ -8,6 +8,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const fallbackImage = '/computadora.jpg'; // Reemplaza con la ruta a tu imagen de respaldo
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,11 +34,13 @@ const ProductDetail = () => {
     return <div className="text-center mt-10 text-red-500">Error: {error.message}</div>;
   }
 
+  const imageUrl = product.images && product.images.length > 0 ? product.images[0].imageUrl : fallbackImage;
+
   return (
     <div className="container mx-auto p-4 flex justify-center items-center min-h-screen">
       <div className="bg-white rounded-lg shadow-md p-6 max-w-lg w-full">
         <h2 className="text-3xl font-bold mb-4 text-center">{product.name}</h2>
-        <img src={`https://e-commerce-test-hqul.onrender.com/products/${product.images.imageUrl}`} alt={product.name} className="w-full h-48 object-cover rounded-md mb-4" />
+        <img src={imageUrl} alt={product.name} className="w-full h-48 object-cover rounded-md mb-4" />
         <p className="text-gray-700 mb-4">{product.description}</p>
         <p className="text-lg font-semibold mb-4 text-center">{`$${product.price.toFixed(2)}`}</p>
         <div className="text-gray-700 mb-4">

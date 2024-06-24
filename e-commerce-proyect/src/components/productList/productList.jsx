@@ -21,20 +21,20 @@ const ProductList = ({ onSelectProduct }) => {
   const fetchProducts = async () => {
     setLoading(true);
     let url = 'https://e-commerce-test-hqul.onrender.com/products';
-    if (filterOptions.brands.length > 0 || filterOptions.subcategories.length > 0) {
-      const brandParams = filterOptions.brands.length > 0 ? `brands=${filterOptions.brands.join(',')}` : '';
-      const subcategoryParams = filterOptions.subcategories.length > 0 ? `subcategories=${filterOptions.subcategories.join(',')}` : '';
-      url += `?${brandParams}&${subcategoryParams}`;
+
+    if (filterOptions.brands.length > 0) {
+      url += `/marca/${filterOptions.brands[0]}`;
+    } else if (filterOptions.subcategories.length > 0) {
+      url += `/subcategory/${filterOptions.subcategories[0]}`;
     }
 
     try {
       const response = await axios.get(url);
       setProducts(response.data);
-      setLoading(false);
     } catch (error) {
       setError(error);
+    } finally {
       setLoading(false);
-      console.error('There has been a problem with your axios operation:', error);
     }
   };
 
@@ -43,8 +43,8 @@ const ProductList = ({ onSelectProduct }) => {
   }, [filterOptions]);
 
   const handleSearchChange = (value) => {
-    setSearchTerm(value); 
-    setCurrentPage(1); 
+    setSearchTerm(value);
+    setCurrentPage(1);
   };
 
   const handleSortChange = (value) => {
@@ -121,7 +121,7 @@ const ProductList = ({ onSelectProduct }) => {
         </div>
       )}
 
-      <div className="flex-grow"> 
+      <div className="flex-grow">
         <Pagination currentPage={currentPage} totalPages={Math.ceil(filteredProducts.length / productsPerPage)} onPageChange={paginate} />
       </div>
     </div>
