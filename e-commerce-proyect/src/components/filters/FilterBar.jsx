@@ -10,37 +10,34 @@ const FilterBar = ({ onFilterChange }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://e-commerce-test-hqul.onrender.com/marcas')
-      .then(response => {
-        setMarcas(response.data);
-        setLoading(false);
-      })
-      .catch(error => { 
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [marcasResponse, subcategoriasResponse] = await Promise.all([
+          axios.get('https://e-commerce-test-hqul.onrender.com/marcas'),
+          axios.get('https://e-commerce-test-hqul.onrender.com/subcategories')
+        ]);
+        setMarcas(marcasResponse.data);
+        setSubcategorias(subcategoriasResponse.data);
+      } catch (error) {
         setError(error);
+        console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
-        console.error('Error fetching brands:', error);
-      });
-
-    axios.get('https://e-commerce-test-hqul.onrender.com/categories')
-      .then(response => {
-        setSubcategorias(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
-        console.error('Error fetching subcategories:', error);
-      });
+      }
+    };
+    fetchData();
   }, []);
 
   const handleFilterChange = () => {
-    if (filterOption && filterValue) {
-      onFilterChange({ type: filterOption, value: filterValue });
-    } else if (filterOption === 'all') {
-      onFilterChange({ type: 'all' });
+    if (filterOption === 'brand' && filterValue) {
+      onFilterChange({ brands: [filterValue], subcategories: [] });
+    } else if (filterOption === 'subcategory' && filterValue) {
+      onFilterChange({ brands: [], subcategories: [filterValue] });
+    } else {
+      onFilterChange({ brands: [], subcategories: [] });
     }
   };
-
   if (loading) {
     return <div>Loading brands and subcategories...</div>;
   }
@@ -51,7 +48,7 @@ const FilterBar = ({ onFilterChange }) => {
 
   return (
     <div className="filter-bar mb-4">
-      <label htmlFor="filter">Filter by:  </label>
+      <label htmlFor="filter">Filter by: </label>
       <select
         value={filterOption}
         onChange={(e) => {
@@ -59,7 +56,7 @@ const FilterBar = ({ onFilterChange }) => {
           setFilterValue(''); // Reset filter value when changing filter option
         }}
       >
-        <option value="all">All</option>
+        <option value="">Select filter option</option>
         <option value="brand">Brand</option>
         <option value="subcategory">Subcategory</option>
       </select>
