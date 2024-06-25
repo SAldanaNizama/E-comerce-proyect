@@ -16,17 +16,27 @@ const ProductList = ({ onSelectProduct }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [sortOption, setSortOption] = useState('');
-  const [filterOptions, setFilterOptions] = useState({ brands: [], subcategories: [] });
+  const [filterOptions, setFilterOptions] = useState({ brands: [], subcategories: [], minPrice: '', maxPrice: '' });
 
   const fetchProducts = async () => {
     setLoading(true);
-    let url = 'https://e-commerce-test-hqul.onrender.com/products';
+    let url = 'https://e-commerce-test-hqul.onrender.com/products/filter?';
 
     if (filterOptions.brands.length > 0) {
-      url += `/marca/${filterOptions.brands[0]}`;
-    } else if (filterOptions.subcategories.length > 0) {
-      url += `/subcategory/${filterOptions.subcategories[0]}`;
+      url += `marcaId=${filterOptions.brands[0]}&`;
     }
+    if (filterOptions.subcategories.length > 0) {
+      url += `subcategoryId=${filterOptions.subcategories[0]}&`;
+    }
+    if (filterOptions.minPrice) {
+      url += `minPrice=${filterOptions.minPrice}&`;
+    }
+    if (filterOptions.maxPrice) {
+      url += `maxPrice=${filterOptions.maxPrice}&`;
+    }
+
+    // Remove trailing '&' or '?' if any
+    url = url.slice(-1) === '&' || url.slice(-1) === '?' ? url.slice(0, -1) : url;
 
     try {
       const response = await axios.get(url);

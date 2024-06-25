@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const FilterBar = ({ onFilterChange }) => {
-  const [filterOption, setFilterOption] = useState('');
-  const [filterValue, setFilterValue] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [marcas, setMarcas] = useState([]);
   const [subcategorias, setSubcategorias] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,14 +32,15 @@ const FilterBar = ({ onFilterChange }) => {
   }, []);
 
   const handleFilterChange = () => {
-    if (filterOption === 'brand' && filterValue) {
-      onFilterChange({ brands: [filterValue], subcategories: [] });
-    } else if (filterOption === 'subcategory' && filterValue) {
-      onFilterChange({ brands: [], subcategories: [filterValue] });
-    } else {
-      onFilterChange({ brands: [], subcategories: [] });
-    }
+    const filters = {
+      brands: selectedBrand ? [selectedBrand] : [],
+      subcategories: selectedSubcategory ? [selectedSubcategory] : [],
+      minPrice: minPrice ? parseFloat(minPrice) : undefined,
+      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined
+    };
+    onFilterChange(filters);
   };
+
   if (loading) {
     return <div>Loading brands and subcategories...</div>;
   }
@@ -48,42 +51,55 @@ const FilterBar = ({ onFilterChange }) => {
 
   return (
     <div className="filter-bar mb-4">
-      <label htmlFor="filter">Filter by: </label>
-      <select
-        value={filterOption}
-        onChange={(e) => {
-          setFilterOption(e.target.value);
-          setFilterValue(''); // Reset filter value when changing filter option
-        }}
-      >
-        <option value="">Select filter option</option>
-        <option value="brand">Brand</option>
-        <option value="subcategory">Subcategory</option>
-      </select>
-
-      {filterOption === 'brand' && (
+      <div>
+        <label htmlFor="brand-filter">Filter by Brand: </label>
         <select
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
+          id="brand-filter"
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
         >
           <option value="">Select a brand</option>
           {marcas.map(marca => (
             <option key={marca.marcaId} value={marca.marcaId}>{marca.name}</option>
           ))}
         </select>
-      )}
+      </div>
 
-      {filterOption === 'subcategory' && (
+      <div>
+        <label htmlFor="subcategory-filter">Filter by Subcategory: </label>
         <select
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
+          id="subcategory-filter"
+          value={selectedSubcategory}
+          onChange={(e) => setSelectedSubcategory(e.target.value)}
         >
           <option value="">Select a subcategory</option>
           {subcategorias.map(subcategoria => (
             <option key={subcategoria.subcategoryId} value={subcategoria.subcategoryId}>{subcategoria.name}</option>
           ))}
         </select>
-      )}
+      </div>
+
+      <div>
+        <label htmlFor="min-price-filter">Min Price: </label>
+        <input
+          type="number"
+          id="min-price-filter"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+          placeholder="Min Price"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="max-price-filter">Max Price: </label>
+        <input
+          type="number"
+          id="max-price-filter"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+          placeholder="Max Price"
+        />
+      </div>
 
       <button onClick={handleFilterChange}>Apply Filter</button>
     </div>
