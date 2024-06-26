@@ -10,6 +10,7 @@ const FilterBar = ({ onFilterChange }) => {
   const [subcategorias, setSubcategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,58 +51,72 @@ const FilterBar = ({ onFilterChange }) => {
   }
 
   return (
-    <div className="filter-bar mb-4">
-      <div>
-        <label htmlFor="brand-filter">Filter by Brand: </label>
-        <select
-          id="brand-filter"
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-        >
-          <option value="">Select a brand</option>
-          {marcas.map(marca => (
-            <option key={marca.marcaId} value={marca.marcaId}>{marca.name}</option>
-          ))}
-        </select>
-      </div>
+    <div>
+      <button
+        className="md:hidden p-2 bg-indigo-600 text-white rounded"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        Toggle Filters
+      </button>
+      <div className={`fixed inset-0 w-64 bg-white shadow-lg p-4 z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition-transform duration-300`}>
+        <div>
+          <label htmlFor="brand-filter" className="block text-sm font-medium text-gray-700">Filter by Brand:</label>
+          <select
+            id="brand-filter"
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+          >
+            <option value="">Select a brand</option>
+            {marcas.map(marca => (
+              <option key={marca.marcaId} value={marca.name}>{marca.name}</option>
+            ))}
+          </select>
+        </div>
 
-      <div>
-        <label htmlFor="subcategory-filter">Filter by Subcategory: </label>
-        <select
-          id="subcategory-filter"
-          value={selectedSubcategory}
-          onChange={(e) => setSelectedSubcategory(e.target.value)}
-        >
-          <option value="">Select a subcategory</option>
-          {subcategorias.map(subcategoria => (
-            <option key={subcategoria.subcategoryId} value={subcategoria.subcategoryId}>{subcategoria.name}</option>
-          ))}
-        </select>
-      </div>
+        <div className="mt-4">
+          <label htmlFor="subcategory-filter" className="block text-sm font-medium text-gray-700">Filter by Subcategory:</label>
+          <select
+            id="subcategory-filter"
+            value={selectedSubcategory}
+            onChange={(e) => setSelectedSubcategory(e.target.value)}
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+          >
+            <option value="">Select a subcategory</option>
+            {subcategorias.map(subcategoria => (
+              <option key={subcategoria.subcategoryId} value={subcategoria.name}>{subcategoria.name}</option>
+            ))}
+          </select>
+        </div>
 
-      <div>
-        <label htmlFor="min-price-filter">Min Price: </label>
-        <input
-          type="number"
-          id="min-price-filter"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-          placeholder="Min Price"
-        />
-      </div>
+        <div className="mt-4">
+          <label htmlFor="min-price-filter" className="block text-sm font-medium text-gray-700">Min Price:</label>
+          <input
+            type="number"
+            id="min-price-filter"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            placeholder="Min Price"
+          />
+        </div>
 
-      <div>
-        <label htmlFor="max-price-filter">Max Price: </label>
-        <input
-          type="number"
-          id="max-price-filter"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-          placeholder="Max Price"
-        />
-      </div>
+        <div className="mt-4">
+          <label htmlFor="max-price-filter" className="block text-sm font-medium text-gray-700">Max Price:</label>
+          <input
+            type="number"
+            id="max-price-filter"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            placeholder="Max Price"
+          />
+        </div>
 
-      <button onClick={handleFilterChange}>Apply Filter</button>
+        <button onClick={handleFilterChange} className="mt-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Apply Filter
+        </button>
+      </div>
     </div>
   );
 };
