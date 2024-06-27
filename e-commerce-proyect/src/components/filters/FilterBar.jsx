@@ -60,33 +60,39 @@ const FilterBar = ({ onFilterChange }) => {
       </button>
       <div className={`fixed inset-0 w-64 bg-white shadow-lg p-4 z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition-transform duration-300`}>
         <div>
-          <label htmlFor="brand-filter" className="block text-sm font-medium text-gray-700">Filter by Brand:</label>
-          <select
-            id="brand-filter"
-            value={selectedBrand}
-            onChange={(e) => setSelectedBrand(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option value="">Select a brand</option>
-            {marcas.map(marca => (
-              <option key={marca.marcaId} value={marca.name}>{marca.name}</option>
-            ))}
-          </select>
+          <label className="block text-sm font-medium text-gray-700">Filter by Brand:</label>
+          {marcas.map(marca => (
+            <div key={marca.marcaId} className="mt-2">
+              <input
+                type="radio"
+                id={`brand-${marca.marcaId}`}
+                name="brand"
+                value={marca.name}
+                checked={selectedBrand === marca.name}
+                onChange={() => setSelectedBrand(marca.name)}
+                className="mr-2"
+              />
+              <label htmlFor={`brand-${marca.marcaId}`} className="text-sm text-gray-700">{marca.name}</label>
+            </div>
+          ))}
         </div>
 
         <div className="mt-4">
-          <label htmlFor="subcategory-filter" className="block text-sm font-medium text-gray-700">Filter by Subcategory:</label>
-          <select
-            id="subcategory-filter"
-            value={selectedSubcategory}
-            onChange={(e) => setSelectedSubcategory(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option value="">Select a subcategory</option>
-            {subcategorias.map(subcategoria => (
-              <option key={subcategoria.subcategoryId} value={subcategoria.name}>{subcategoria.name}</option>
-            ))}
-          </select>
+          <label className="block text-sm font-medium text-gray-700">Filter by Subcategory:</label>
+          {subcategorias.map(subcategoria => (
+            <div key={subcategoria.subcategoryId} className="mt-2">
+              <input
+                type="radio"
+                id={`subcategory-${subcategoria.subcategoryId}`}
+                name="subcategory"
+                value={subcategoria.name}
+                checked={selectedSubcategory === subcategoria.name}
+                onChange={() => setSelectedSubcategory(subcategoria.name)}
+                className="mr-2"
+              />
+              <label htmlFor={`subcategory-${subcategoria.subcategoryId}`} className="text-sm text-gray-700">{subcategoria.name}</label>
+            </div>
+          ))}
         </div>
 
         <div className="mt-4">
