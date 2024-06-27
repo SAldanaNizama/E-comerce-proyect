@@ -51,7 +51,7 @@ const ProductList = ({ onSelectProduct }) => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [filterOptions]);
 
   const handleSearchChange = (value) => {
     setSearchTerm(value);
