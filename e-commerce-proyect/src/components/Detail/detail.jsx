@@ -8,7 +8,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const fallbackImage = '/computadora.jpg'; // Reemplaza con la ruta a tu imagen de respaldo
+  const fallbackImage = '/wazaStore1.png'; 
 
   useEffect(() => {
     const fetchProduct = async () => {
