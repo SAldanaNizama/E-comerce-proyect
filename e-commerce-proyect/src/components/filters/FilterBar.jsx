@@ -32,7 +32,7 @@ const FilterBar = ({ onFilterChange }) => {
     fetchData();
   }, []);
 
-  const handleFilterChange = () => {
+  useEffect(() => {
     const filters = {
       brands: selectedBrand ? [selectedBrand] : [],
       subcategories: selectedSubcategory ? [selectedSubcategory] : [],
@@ -40,6 +40,22 @@ const FilterBar = ({ onFilterChange }) => {
       maxPrice: maxPrice ? parseFloat(maxPrice) : undefined
     };
     onFilterChange(filters);
+  }, [selectedBrand, selectedSubcategory, minPrice, maxPrice]);
+
+  const handleBrandChange = (name) => {
+    setSelectedBrand(name === selectedBrand ? '' : name); // Toggle selected brand
+  };
+
+  const handleSubcategoryChange = (name) => {
+    setSelectedSubcategory(name === selectedSubcategory ? '' : name); // Toggle selected subcategory
+  };
+
+  const handleClearFilters = () => {
+    setSelectedBrand('');
+    setSelectedSubcategory('');
+    setMinPrice('');
+    setMaxPrice('');
+    onFilterChange({ brands: [], subcategories: [], minPrice: undefined, maxPrice: undefined });
   };
 
   if (loading) {
@@ -69,10 +85,10 @@ const FilterBar = ({ onFilterChange }) => {
                 name="brand"
                 value={marca.name}
                 checked={selectedBrand === marca.name}
-                onChange={() => setSelectedBrand(marca.name)}
+                onChange={() => handleBrandChange(marca.name)}
                 className="mr-2"
               />
-              <label htmlFor={`brand-${marca.marcaId}`} className="text-sm text-gray-700">{marca.name}</label>
+              <label htmlFor={`brand-${marca.marcaId}`}>{marca.name}</label>
             </div>
           ))}
         </div>
@@ -87,41 +103,42 @@ const FilterBar = ({ onFilterChange }) => {
                 name="subcategory"
                 value={subcategoria.name}
                 checked={selectedSubcategory === subcategoria.name}
-                onChange={() => setSelectedSubcategory(subcategoria.name)}
+                onChange={() => handleSubcategoryChange(subcategoria.name)}
                 className="mr-2"
               />
-              <label htmlFor={`subcategory-${subcategoria.subcategoryId}`} className="text-sm text-gray-700">{subcategoria.name}</label>
+              <label htmlFor={`subcategory-${subcategoria.subcategoryId}`}>{subcategoria.name}</label>
             </div>
           ))}
         </div>
 
         <div className="mt-4">
-          <label htmlFor="min-price-filter" className="block text-sm font-medium text-gray-700">Min Price:</label>
+          <label className="block text-sm font-medium text-gray-700">Min Price:</label>
           <input
             type="number"
-            id="min-price-filter"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-            placeholder="Min Price"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
           />
         </div>
 
         <div className="mt-4">
-          <label htmlFor="max-price-filter" className="block text-sm font-medium text-gray-700">Max Price:</label>
+          <label className="block text-sm font-medium text-gray-700">Max Price:</label>
           <input
             type="number"
-            id="max-price-filter"
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-            placeholder="Max Price"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
           />
         </div>
 
-        <button onClick={handleFilterChange} className="mt-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Apply Filter
-        </button>
+        <div className="mt-4">
+          <button
+            className="bg-red-500 text-white py-2 px-4 rounded"
+            onClick={handleClearFilters}
+          >
+            Clear Filters
+          </button>
+        </div>
       </div>
     </div>
   );

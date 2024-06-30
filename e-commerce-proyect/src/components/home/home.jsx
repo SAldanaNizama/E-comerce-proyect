@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import LoadingSpinner from '../loading/loading';
+const defaultImage = './wazaStore.png'; 
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [topViewedProducts, setTopViewedProducts] = useState([]);
 
   useEffect(() => {
-    const images = [
-      "https://www.intel.la/content/dam/www/central-libraries/us/en/images/2022-08/rpl-desktop-chip-angle-3-white.png.rendition.intel.web.1648.927.png",
-      "https://www.crucial.mx/content/dam/crucial/dram-products/laptop/images/web/crucial-ddr4-sodimm-kit-w-shadow-image.psd.transform/small-jpg/img.jpg",
-      "https://www.destreaming.es/wp-content/uploads/2020/11/pc_para_streaming_gaming.jpg"
-    ];
-    
-    const loadImages = images.map(src => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-    });
+    const fetchTopViewedProducts = async () => {
+      try {
+        const response = await axios.get('https://e-commerce-test-hqul.onrender.com/products/top-views');
+        setTopViewedProducts(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching top viewed products:', error);
+        setIsLoading(false);
+      }
+    };
 
-    Promise.all(loadImages)
-      .then(() => setIsLoading(false))
-      .catch(() => setIsLoading(false));
+    fetchTopViewedProducts();
   }, []);
 
   return (
@@ -40,18 +37,16 @@ const Home = () => {
           showArrows={true}
           showStatus={false}
         >
-          <div>
-            <img src="https://www.intel.la/content/dam/www/central-libraries/us/en/images/2022-08/rpl-desktop-chip-angle-3-white.png.rendition.intel.web.1648.927.png" alt="Imagen 1" />
-            <p className="legend text-confianza-azulMarino">Procesador</p>
-          </div>
-          <div>
-            <img src="https://www.crucial.mx/content/dam/crucial/dram-products/laptop/images/web/crucial-ddr4-sodimm-kit-w-shadow-image.psd.transform/small-jpg/img.jpg" alt="Imagen 2" />
-            <p className="legend text-confianza-azulMarino">Memoria Ram</p>
-          </div>
-          <div>
-            <img src="https://www.destreaming.es/wp-content/uploads/2020/11/pc_para_streaming_gaming.jpg" alt="Imagen 3" />
-            <p className="legend text-confianza-azulMarino">Pc Gamer</p>
-          </div>
+          {topViewedProducts.map((product, index) => (
+            <div key={index}>
+              <a href={`/product/${product.productId}`}>
+                <img src={product.imageUrl || defaultImage} alt={`Imagen ${index + 1}`} />
+              </a>
+              <p className="legend text-confianza-azulMarino">
+                <a href={`/product/${product.productId}`}>{product.name}</a>
+              </p>
+            </div>
+          ))}
         </Carousel>
       )}
     </div>
