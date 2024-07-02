@@ -7,59 +7,64 @@ const Cards = ({ searchTerm, filters, currentPage, productsPerPage, sortOption }
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchFilteredProducts = async () => {
-      setLoading(true);
-      try {
-        let url = "https://e-commerce-test-hqul.onrender.com/products/filter?";
+ useEffect(() => {
+  const fetchFilteredProducts = async () => {
+    setLoading(true);
+    try {
+      let url = "https://e-commerce-test-hqul.onrender.com/products/filter?";
+      const params = new URLSearchParams();
 
-        const params = new URLSearchParams();
-        
-        if (filters.brands && filters.brands.length > 0) {
-          params.append("marcaName", filters.brands.join(","));
-        }
-        
-        if (filters.subcategories && filters.subcategories.length > 0) {
-          params.append("subcategoryName", filters.subcategories.map(subcat => subcat.name).join(","));
-        }
-        
-        if (filters.minPrice !== undefined) {
-          params.append("minPrice", filters.minPrice.toString());
-        }
-        
-        if (filters.maxPrice !== undefined) {
-          params.append("maxPrice", filters.maxPrice.toString());
-        }
-        
-        const response = await axios.get(`${url}${params.toString()}`);
-        let products = response.data;
-
-        if (searchTerm) {
-          products = products.filter(product => 
-            product.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-
-        if (sortOption) {
-          products.sort((a, b) => {
-            if (sortOption === "nameAsc") return a.name.localeCompare(b.name);
-            if (sortOption === "nameDesc") return b.name.localeCompare(a.name);
-            if (sortOption === "priceAsc") return a.price - b.price;
-            if (sortOption === "priceDesc") return b.price - a.price;
-            return 0;
-          });
-        }
-
-        setFilteredProducts(products);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+      if (filters.brands && filters.brands.length > 0) {
+        params.append("marcaName", filters.brands.join(","));
       }
-    };
+      
+      if (filters.subcategories && filters.subcategories.length > 0) {
+        const subcategoryNames = filters.subcategories;
+        params.append("subcategoryName", subcategoryNames.join(","));
+      }
+      
+      if (filters.minPrice !== undefined) {
+        params.append("minPrice", filters.minPrice.toString());
+      }
+      
+      if (filters.maxPrice !== undefined) {
+        params.append("maxPrice", filters.maxPrice.toString());
+      }
 
-    fetchFilteredProducts();
-  }, [filters, searchTerm, sortOption]);
+      console.log("Requesting with params:", params.toString());
+
+      const response = await axios.get(`${url}${params.toString()}`);
+      console.log("Response data:", response.data);
+
+      let products = response.data;
+
+      if (searchTerm) {
+        products = products.filter(product => 
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      if (sortOption) {
+        products.sort((a, b) => {
+          if (sortOption === "nameAsc") return a.name.localeCompare(b.name);
+          if (sortOption === "nameDesc") return b.name.localeCompare(a.name);
+          if (sortOption === "priceAsc") return a.price - b.price;
+          if (sortOption === "priceDesc") return b.price - a.price;
+          return 0;
+        });
+      }
+
+      setFilteredProducts(products);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchFilteredProducts();
+}, [filters, searchTerm, sortOption]);
+
 
   if (loading) {
     return <LoadingSpinner/>;
