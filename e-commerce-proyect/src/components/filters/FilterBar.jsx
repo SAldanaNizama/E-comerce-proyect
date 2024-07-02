@@ -59,7 +59,7 @@ const FilterBar = ({ onFilterChange }) => {
   };
 
   if (loading) {
-    return <div>Loading brands and subcategories...</div>;
+    return <div>...</div>;
   }
 
   if (error) {
