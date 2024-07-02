@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import LoadingSpinner from '../loading/loading';
-const defaultImage = './wazaStore.png'; 
+
+
+const defaultImage = './wazaStore.png';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,29 +25,24 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4 bg-transmitir-blanco">
+    <div className="container mx-auto p-4 bg-gray-100">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Top Viewed Products</h2>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <Carousel 
-          autoPlay 
-          infiniteLoop 
-          showThumbs={false} 
-          interval={3000} 
-          showArrows={true}
-          showStatus={false}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {topViewedProducts.map((product, index) => (
-            <div key={index}>
+            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
               <a href={`/product/${product.productId}`}>
-                <img src={product.imageUrl || defaultImage} alt={`Imagen ${index + 1}`} />
+                <img src={product.imageUrl || defaultImage} alt={`Product ${index + 1}`} className="w-full h-64 object-cover" />
               </a>
-              <p className="legend text-confianza-azulMarino">
-                <a href={`/product/${product.productId}`}>{product.name}</a>
-              </p>
+              <div className="p-4">
+                <a href={`/product/${product.productId}`} className="block text-lg font-semibold text-gray-800 mb-2 hover:text-blue-500">{product.name}</a>
+                <p className="text-gray-600">${product.price}</p>
+              </div>
             </div>
           ))}
-        </Carousel>
+        </div>
       )}
     </div>
   );
