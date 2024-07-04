@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Cards from '../cards/cards';
 import Pagination from '../pagination/pagination';
 import SearchBar from '../searchBar/searchBar';
@@ -17,6 +17,7 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(12);
   const [sortOption, setSortOption] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
 
   const handleProductSelect = (product) => {
     setSelectedProduct(product);
@@ -34,6 +35,10 @@ const ProductList = () => {
 
   const handleSortChange = (sortOption) => {
     setSortOption(sortOption);
+  };
+
+  const handleTotalPagesChange = (totalPages) => {
+    setTotalPages(totalPages);
   };
 
   return (
@@ -58,10 +63,12 @@ const ProductList = () => {
           productsPerPage={productsPerPage}
           sortOption={sortOption}
           onSelectProduct={handleProductSelect}
+          onTotalPagesChange={handleTotalPagesChange}
         />
 
         <Pagination 
           currentPage={currentPage}
+          totalPages={totalPages}
           onPageChange={setCurrentPage} 
         />
       </div>
