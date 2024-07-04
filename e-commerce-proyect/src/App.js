@@ -5,6 +5,7 @@ import ProductDetail from './components/Detail/detail';
 import Products from './components/products/Products';
 import Navbar from './components/navBar/NavBar';
 import Login from "./components/login/login"
+import About from './components/about/About';
 import "./App.css";
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path='/product/:id' element={<ProductDetail />} />
             <Route path='/products' element={<Products />} />
-            <Route path='/login' element={<Login/>} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/about' element={<About/>}/>
           </Routes>
         </header>
         <div className="flex-grow">

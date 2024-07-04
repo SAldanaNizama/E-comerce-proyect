@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-futurista-negro text-futurista-azulNeon rounded-lg shadow m-4">
@@ -9,7 +9,9 @@ const Footer = () => {
         </span>
         <ul className="flex flex-wrap items-center mt-3 text-sm font-medium sm:mt-0">
           <li>
-            <a href="/" className="mr-4 hover:underline md:mr-6 text-futurista-azulNeon">About</a>
+            <Link to="/about" className="mr-4 hover:underline md:mr-6 text-futurista-azulNeon">
+            About
+          </Link>
           </li>
           <li>
             <a href="/" className="mr-4 hover:underline md:mr-6 text-futurista-azulNeon">Privacy Policy</a>
