@@ -8,18 +8,18 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center">
           {/* <img src={logo} alt="Waza Stores" className="h-13 max-h-14 w-auto cursor-pointer" /> */}
-          <div className="text-transmitir-blanco text-2xl font-bold">
-          Waza Stores
-        </div>
+          <div className="text-transmitir-blanco text-2xl font-extrabold">
+            Waza Stores
+          </div>
         </Link>
         <div className="flex space-x-5">
-          <Link to="/" className="text-transmitir-blanco text-xl hover:text-futurista-negro">
+          <Link to="/" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
             Home
           </Link>
-          <Link to="/products" className="text-transmitir-blanco text-xl hover:text-futurista-negro">
+          <Link to="/products" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
             Products
           </Link>
-          <Link to="/login" className="text-transmitir-blanco text-xl hover:text-futurista-negro">
+          <Link to="/login" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
             Login
           </Link>
         </div>
@@ -28,4 +28,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;   
