@@ -8,7 +8,7 @@ const SearchBar = ({ searchTerm, onSearchChange }) => {
         placeholder="Search for products..."
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
-        className="search-bar px-3 py-4 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 w-3/4 md:w-1/3"
+        className="search-bar px-2 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 w-3/4 md:w-1/3"
       />
     </div>
   );
