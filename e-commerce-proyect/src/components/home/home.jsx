@@ -37,6 +37,7 @@ const Home = () => {
   };
 
   return (
+    <div className='margin-top'>
     <div className="container mx-auto p-4 bg-gray-100">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center mt-8">Top Viewed Products</h2>
       {isLoading ? (
@@ -61,6 +62,7 @@ const Home = () => {
           })}
         </Slider>
       )}
+        </div>
     </div>
   );
 };
