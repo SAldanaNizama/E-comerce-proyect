@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const FilterBar = ({ onFilterChange }) => {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const [marcas, setMarcas] = useState([]);
   const [subcategorias, setSubcategorias] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,14 +17,14 @@ const FilterBar = ({ onFilterChange }) => {
       setLoading(true);
       try {
         const [marcasResponse, subcategoriasResponse] = await Promise.all([
-          axios.get('https://e-commerce-test-hqul.onrender.com/marcas'),
-          axios.get('https://e-commerce-test-hqul.onrender.com/subcategories')
+          axios.get("https://e-commerce-test-hqul.onrender.com/marcas"),
+          axios.get("https://e-commerce-test-hqul.onrender.com/subcategories"),
         ]);
         setMarcas(marcasResponse.data);
         setSubcategorias(subcategoriasResponse.data);
       } catch (error) {
         setError(error);
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -37,29 +37,38 @@ const FilterBar = ({ onFilterChange }) => {
       brands: selectedBrands,
       subcategories: selectedSubcategories,
       minPrice: minPrice ? parseFloat(minPrice) : undefined,
-      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined
+      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
     };
     onFilterChange(filters);
   }, [selectedBrands, selectedSubcategories, minPrice, maxPrice]);
 
   const handleBrandChange = (name) => {
-    setSelectedBrands(prev => 
-      prev.includes(name) ? prev.filter(item => item !== name) : [...prev, name]
+    setSelectedBrands((prev) =>
+      prev.includes(name)
+        ? prev.filter((item) => item !== name)
+        : [...prev, name]
     );
   };
 
   const handleSubcategoryChange = (name) => {
-    setSelectedSubcategories(prev => 
-      prev.includes(name) ? prev.filter(item => item !== name) : [...prev, name]
+    setSelectedSubcategories((prev) =>
+      prev.includes(name)
+        ? prev.filter((item) => item !== name)
+        : [...prev, name]
     );
   };
 
   const handleClearFilters = () => {
     setSelectedBrands([]);
     setSelectedSubcategories([]);
-    setMinPrice('');
-    setMaxPrice('');
-    onFilterChange({ brands: [], subcategories: [], minPrice: undefined, maxPrice: undefined });
+    setMinPrice("");
+    setMaxPrice("");
+    onFilterChange({
+      brands: [],
+      subcategories: [],
+      minPrice: undefined,
+      maxPrice: undefined,
+    });
   };
 
   if (loading) {
@@ -76,12 +85,18 @@ const FilterBar = ({ onFilterChange }) => {
         className="md:hidden p-2 bg-indigo-600 text-white rounded"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
-        {isSidebarOpen ? 'Close Filters' : 'Open Filters'}
+        {isSidebarOpen ? "Close Filters" : "Open Filters"}
       </button>
-      <div className={`fixed inset-0 w-64 bg-white shadow-lg p-4 z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition-transform duration-300 ease-in-out`}>
+      <div
+        className={`fixed inset-0 w-64 bg-white shadow-lg p-4 z-50 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out`}
+      >
         <div>
-          <label className="block text-sm font-medium text-gray-700">Filter by Brand:</label>
-          {marcas.map(marca => (
+          <label className="block text-sm font-medium text-gray-700">
+            Filter by Brand:
+          </label>
+          {marcas.map((marca) => (
             <div key={marca.marcaId} className="mt-2">
               <input
                 type="checkbox"
@@ -98,8 +113,10 @@ const FilterBar = ({ onFilterChange }) => {
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Filter by Subcategory:</label>
-          {subcategorias.map(subcategoria => (
+          <label className="block text-sm font-medium text-gray-700">
+            Filter by Subcategory:
+          </label>
+          {subcategorias.map((subcategoria) => (
             <div key={subcategoria.subcategoryId} className="mt-2">
               <input
                 type="checkbox"
@@ -110,13 +127,17 @@ const FilterBar = ({ onFilterChange }) => {
                 onChange={() => handleSubcategoryChange(subcategoria.name)}
                 className="mr-2"
               />
-              <label htmlFor={`subcategory-${subcategoria.subcategoryId}`}>{subcategoria.name}</label>
+              <label htmlFor={`subcategory-${subcategoria.subcategoryId}`}>
+                {subcategoria.name}
+              </label>
             </div>
           ))}
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Min Price:</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Min Price:
+          </label>
           <input
             type="number"
             value={minPrice}
@@ -126,7 +147,9 @@ const FilterBar = ({ onFilterChange }) => {
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Max Price:</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Max Price:
+          </label>
           <input
             type="number"
             value={maxPrice}
