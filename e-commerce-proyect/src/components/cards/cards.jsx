@@ -3,7 +3,14 @@ import axios from "axios";
 import ProductCard from "../card/card";
 import LoadingSpinner from "../loading/loading";
 
-const Cards = ({ searchTerm, filters, currentPage, productsPerPage, sortOption, onTotalPagesChange }) => {
+const Cards = ({
+  searchTerm,
+  filters,
+  currentPage,
+  productsPerPage,
+  sortOption,
+  onTotalPagesChange,
+}) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,18 +23,18 @@ const Cards = ({ searchTerm, filters, currentPage, productsPerPage, sortOption, 
         const params = new URLSearchParams();
 
         if (filters.brands && filters.brands.length > 0) {
-          params.append("marcaName", filters.brands.join(","));
+          params.append("marcaNames", filters.brands.join(","));
         }
-        
+
         if (filters.subcategories && filters.subcategories.length > 0) {
           const subcategoryNames = filters.subcategories;
-          params.append("subcategoryName", subcategoryNames.join(","));
+          params.append("subcategoryNames", subcategoryNames.join(","));
         }
-        
+
         if (filters.minPrice !== undefined) {
           params.append("minPrice", filters.minPrice.toString());
         }
-        
+
         if (filters.maxPrice !== undefined) {
           params.append("maxPrice", filters.maxPrice.toString());
         }
@@ -36,7 +43,7 @@ const Cards = ({ searchTerm, filters, currentPage, productsPerPage, sortOption, 
         let products = response.data;
 
         if (searchTerm) {
-          products = products.filter(product => 
+          products = products.filter((product) =>
             product.name.toLowerCase().includes(searchTerm.toLowerCase())
           );
         }
@@ -73,7 +80,10 @@ const Cards = ({ searchTerm, filters, currentPage, productsPerPage, sortOption, 
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -82,9 +92,15 @@ const Cards = ({ searchTerm, filters, currentPage, productsPerPage, sortOption, 
           <ProductCard key={product.productId} product={product} />
         ))
       ) : (
-         <div className="text-center">
-          <img src="/noSeEncontro.png" alt="No products found" className="mx-auto w-48 h-48 md:w-64 md:h-64" />
-          <p className="font-bold text-lg">No products match the selected filters.</p>
+        <div className="text-center">
+          <img
+            src="/noSeEncontro.png"
+            alt="No products found"
+            className="mx-auto w-48 h-48 md:w-64 md:h-64"
+          />
+          <p className="font-bold text-lg">
+            No products match the selected filters.
+          </p>
         </div>
       )}
     </div>
