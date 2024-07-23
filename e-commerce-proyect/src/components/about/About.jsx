@@ -1,25 +1,20 @@
-import React from 'react';
+import React from "react";
 
 const teamMembers = [
   {
-    name: 'Daniel Julcamoro ',
-    role: 'Backend Developer',
-    image: '/Daniel.jpg',
-        description: 'Certificado en Scrum Fundamentals, con conocimientos en programación, bases de datos y desarrollo de aplicaciones web y móviles. Experiencia en servicio al cliente y habilidades para el trabajo en equipo y comunicación efectiva.'
-
+    name: "Daniel Julcamoro ",
+    role: "Backend Developer",
+    image: "/Daniel.jpg",
+    description:
+      "Certificado en Scrum Fundamentals, con conocimientos en programación, bases de datos y desarrollo de aplicaciones web y móviles. Experiencia en servicio al cliente y habilidades para el trabajo en equipo y comunicación efectiva.",
   },
   {
-    name: 'Samir Aldana',
-    role: 'Frontend Developer',
-    image: '/Samir.jpg',
-    description: 'Apasionado desarrollador web con habilidades en JavaScript y React. Completé un ecommerce como proyecto final en Henry, demostrando mi capacidad para llevar a cabo proyectos de principio a fin. Experiencia en entornos colaborativos usando GitHub, Trello y Scrum. Busco mejorar mis habilidades y alcanzar el nivel de desarrollador senior.'
+    name: "Samir Aldana",
+    role: "Frontend Developer",
+    image: "/Samir.jpg",
+    description:
+      "Apasionado desarrollador web con habilidades en JavaScript y React. Completé un ecommerce como proyecto final en Henry, demostrando mi capacidad para llevar a cabo proyectos de principio a fin. Experiencia en entornos colaborativos usando GitHub, Trello y Scrum. Busco mejorar mis habilidades y alcanzar el nivel de desarrollador senior.",
   },
-  {
-    name: 'Carlos Martínez',
-    role: 'Full Stack Developer',
-    image: 'https://via.placeholder.com/150',
-    description: 'Desarrollador versátil con experiencia en JavaScript, React y SQL.'
-  }
 ];
 
 const TeamMemberCard = ({ member }) => {
