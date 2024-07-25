@@ -12,7 +12,7 @@ const Profile = () => {
       try {
         const token = localStorage.getItem("token"); // Asumiendo que estás guardando el token en localStorage
         const response = await axios.get(
-          "https://e-commerce-test-hqul.onrender.com/users/profile",
+          "https://e-commerce-test-hqul.onrender.com/users",
           {
             headers: {
               Authorization: `Bearer ${token}`,
