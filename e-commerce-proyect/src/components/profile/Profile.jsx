@@ -68,14 +68,7 @@ const Profile = () => {
           </label>
           <p className="text-gray-900">{user.email}</p>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Fecha de Registro:
-          </label>
-          <p className="text-gray-900">
-            {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-        </div>
+
         <div className="flex justify-between mt-6">
           <Link
             to="/edit-profile"
