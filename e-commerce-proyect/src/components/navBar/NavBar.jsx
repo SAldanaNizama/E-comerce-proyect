@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../login/AuthContext";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para verificar si el usuario está autenticado
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    // Aquí manejarías la lógica de cierre de sesión si es necesario
-    setIsLoggedIn(false);
+    logout();
   };
 
   return (
@@ -18,16 +18,25 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="flex space-x-5">
-          <Link to="/" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
+          <Link
+            to="/"
+            className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+          >
             Home
           </Link>
-          <Link to="/products" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
+          <Link
+            to="/products"
+            className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+          >
             Products
           </Link>
-          {isLoggedIn ? (
+          {user ? (
             <>
-              <Link to="/profile" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
-                User
+              <Link
+                to="/profile"
+                className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+              >
+                Profile
               </Link>
               <button
                 onClick={handleLogout}
@@ -37,7 +46,10 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <Link to="/login" className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro">
+            <Link
+              to="/login"
+              className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+            >
               Login
             </Link>
           )}

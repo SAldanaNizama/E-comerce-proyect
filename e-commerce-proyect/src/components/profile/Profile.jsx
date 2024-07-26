@@ -54,13 +54,13 @@ const Profile = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Nombre:
           </label>
-          <p className="text-gray-900">{user.name}</p>
+          <p className="text-gray-900">{user.firstname}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Apellido:
           </label>
-          <p className="text-gray-900">{user.lastName}</p>
+          <p className="text-gray-900">{user.lastname}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
