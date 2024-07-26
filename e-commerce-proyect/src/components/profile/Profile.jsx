@@ -12,7 +12,7 @@ const Profile = () => {
       try {
         const token = localStorage.getItem("token"); // Asumiendo que estás guardando el token en localStorage
         const response = await axios.get(
-          "https://e-commerce-test-hqul.onrender.com/users/profile",
+          "https://e-commerce-test-hqul.onrender.com/users",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -54,13 +54,13 @@ const Profile = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Nombre:
           </label>
-          <p className="text-gray-900">{user.name}</p>
+          <p className="text-gray-900">{user.firstname}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Apellido:
           </label>
-          <p className="text-gray-900">{user.lastName}</p>
+          <p className="text-gray-900">{user.lastname}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -68,14 +68,7 @@ const Profile = () => {
           </label>
           <p className="text-gray-900">{user.email}</p>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Fecha de Registro:
-          </label>
-          <p className="text-gray-900">
-            {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-        </div>
+
         <div className="flex justify-between mt-6">
           <Link
             to="/edit-profile"
