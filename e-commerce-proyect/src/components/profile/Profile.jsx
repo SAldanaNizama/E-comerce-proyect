@@ -1,85 +1,52 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useAuth } from "../login/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Asumiendo que estás guardando el token en localStorage
-        const response = await axios.get(
-          "https://e-commerce-test-hqul.onrender.com/users",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setUser(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError("Error al cargar los datos del usuario");
-        setLoading(false);
-      }
-    };
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
-    fetchUserData();
-  }, []);
+  console.log("User data: ", user); // Verifica los datos del usuario
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Cargando...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-red-500">
-        {error}
-      </div>
-    );
+  if (!user) {
+    return <p>Loading...</p>;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-4">Perfil de Usuario</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-6 text-center">Profile</h2>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Nombre:
-          </label>
-          <p className="text-gray-900">{user.firstname}</p>
+          <label className="block text-gray-700">Email:</label>
+          <p>{user.email}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Apellido:
-          </label>
-          <p className="text-gray-900">{user.lastname}</p>
+          <label className="block text-gray-700">First Name:</label>
+          <p>{user.firstname || "N/A"}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Correo Electrónico:
-          </label>
-          <p className="text-gray-900">{user.email}</p>
+          <label className="block text-gray-700">Last Name:</label>
+          <p>{user.lastname || "N/A"}</p>
         </div>
-
-        <div className="flex justify-between mt-6">
-          <Link
-            to="/edit-profile"
-            className="text-blue-500 hover:text-blue-700"
-          >
-            Editar Perfil
-          </Link>
-          <Link to="/logout" className="text-red-500 hover:text-red-700">
-            Cerrar Sesión
-          </Link>
+        <div className="mb-4">
+          <label className="block text-gray-700">Username:</label>
+          <p>{user.username || "N/A"}</p>
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Roles:</label>
+          <p>{user.roles.map((role) => role.name).join(", ")}</p>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
