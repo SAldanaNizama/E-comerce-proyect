@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../login/AuthContext";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-  };
+  const { user } = useAuth();
 
   return (
     <nav className="bg-futurista-azulNeon p-4">
