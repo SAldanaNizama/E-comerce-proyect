@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 const AuthPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstname, setName] = useState("");
-  const [lastname, setLastName] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { login } = useAuth();
-  const navigate = useNavigate(); // Actualiza aquí
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,13 +36,13 @@ const AuthPage = () => {
       if (isLogin) {
         setSuccessMessage("Login exitoso");
         login(userData); // Guardar el usuario en el contexto
-        navigate("/profile"); // Redirigir al inicio
+        navigate("/profile"); // Redirigir al perfil
       } else {
         setSuccessMessage("Registro exitoso");
         setIsLogin(true); // Cambiar a modo login después del registro exitoso
       }
     } catch (error) {
-      setError("Invalid email or password");
+      setError("Error en el inicio de sesión o registro");
     }
   };
 
@@ -51,8 +51,8 @@ const AuthPage = () => {
     setError("");
     setEmail("");
     setPassword("");
-    setName("");
-    setLastName("");
+    setFirstname("");
+    setLastname("");
     setSuccessMessage("");
   };
 
@@ -69,25 +69,25 @@ const AuthPage = () => {
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700">
-                Name:
+              <label htmlFor="firstname" className="block text-gray-700">
+                First Name:
               </label>
               <input
                 type="text"
                 id="firstname"
                 value={firstname}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setFirstname(e.target.value)}
                 required={!isLogin}
                 className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
-              <label htmlFor="lastName" className="block text-gray-700">
+              <label htmlFor="lastname" className="block text-gray-700">
                 Last Name:
               </label>
               <input
                 type="text"
                 id="lastname"
                 value={lastname}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => setLastname(e.target.value)}
                 required={!isLogin}
                 className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -130,7 +130,7 @@ const AuthPage = () => {
           onClick={toggleAuthMode}
           className="w-full mt-4 text-indigo-600 hover:underline focus:outline-none"
         >
-          {isLogin ? "Create an account" : "Already have an account? Login"}
+          {isLogin ? "Create an account" : "Already have an account?"}
         </button>
       </div>
     </div>
