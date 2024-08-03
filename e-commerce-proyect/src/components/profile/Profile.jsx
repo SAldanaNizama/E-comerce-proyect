@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../login/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-  console.log("User data: ", user); // Verifica los datos del usuario
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   if (!user) {
-    return <p>Loading...</p>;
+    return <p>No user data available.</p>;
   }
 
   return (
@@ -27,19 +36,21 @@ const Profile = () => {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">First Name:</label>
-          <p>{user.firstname || "N/A"}</p>
+          <p>{user.firstname}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Last Name:</label>
-          <p>{user.lastname || "N/A"}</p>
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Username:</label>
-          <p>{user.username || "N/A"}</p>
+          <p>{user.lastname}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Roles:</label>
-          <p>{user.roles.map((role) => role.name).join(", ")}</p>
+          <ul>
+            {user.roles && user.roles.length > 0 ? (
+              user.roles.map((role) => <li key={role.roleId}>{role.name}</li>)
+            ) : (
+              <li>No roles assigned.</li>
+            )}
+          </ul>
         </div>
         <button
           onClick={handleLogout}

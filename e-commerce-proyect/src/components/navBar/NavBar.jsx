@@ -1,3 +1,4 @@
+// src/components/Navbar.js
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../login/AuthContext";
@@ -27,14 +28,12 @@ const Navbar = () => {
             Products
           </Link>
           {user ? (
-            <>
-              <Link
-                to="/profile"
-                className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
-              >
-                Profile
-              </Link>
-            </>
+            <Link
+              to="/profile"
+              className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+            >
+              Profile
+            </Link>
           ) : (
             <Link
               to="/login"
