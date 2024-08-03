@@ -1,98 +1,32 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../login/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const AuthPage = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccessMessage("");
-
-    const url = isLogin
-      ? "https://e-commerce-test-hqul.onrender.com/users/login"
-      : "https://e-commerce-test-hqul.onrender.com/users";
-
-    const data = {
-      email,
-      password,
-      ...(isLogin ? {} : { firstname, lastname }),
-    };
 
     try {
-      const response = await axios.post(url, data);
-      const userData = response.data;
-
-      if (isLogin) {
-        setSuccessMessage("Login exitoso");
-        login(userData); // Guardar el usuario en el contexto
-        navigate("/profile"); // Redirigir al perfil
-      } else {
-        setSuccessMessage("Registro exitoso");
-        setIsLogin(true); // Cambiar a modo login después del registro exitoso
-      }
+      await login(email, password);
+      navigate("/profile"); // Redirigir al perfil
     } catch (error) {
-      setError("Error en el inicio de sesión o registro");
+      setError("Invalid login credentials");
     }
-  };
-
-  const toggleAuthMode = () => {
-    setIsLogin(!isLogin);
-    setError("");
-    setEmail("");
-    setPassword("");
-    setFirstname("");
-    setLastname("");
-    setSuccessMessage("");
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          {isLogin ? "Login" : "Register"}
-        </h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {successMessage && (
-          <p className="text-green-500 mb-4">{successMessage}</p>
-        )}
         <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <div className="mb-4">
-              <label htmlFor="firstname" className="block text-gray-700">
-                First Name:
-              </label>
-              <input
-                type="text"
-                id="firstname"
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
-                required={!isLogin}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-              <label htmlFor="lastname" className="block text-gray-700">
-                Last Name:
-              </label>
-              <input
-                type="text"
-                id="lastname"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
-                required={!isLogin}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-          )}
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700">
               Email:
@@ -123,18 +57,12 @@ const AuthPage = () => {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {isLogin ? "Login" : "Register"}
+            Login
           </button>
         </form>
-        <button
-          onClick={toggleAuthMode}
-          className="w-full mt-4 text-indigo-600 hover:underline focus:outline-none"
-        >
-          {isLogin ? "Create an account" : "Already have an account?"}
-        </button>
       </div>
     </div>
   );
 };
 
-export default AuthPage;
+export default LoginPage;

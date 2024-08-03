@@ -24,11 +24,9 @@ function App() {
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/products" element={<Products />} />
               <Route path="/login" element={<Login />} />
-              <Route
-                path="/profile"
-                element={<PrivateRoute element={<Profile />} />}
-              />{" "}
-              {/* Usar PrivateRoute */}
+              <Route path="/profile" element={<PrivateRoute />}>
+                <Route path="" element={<Profile />} />
+              </Route>
               <Route path="/about" element={<About />} />
               <Route path="/support" element={<Support />} />
             </Routes>
