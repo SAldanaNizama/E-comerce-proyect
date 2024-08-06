@@ -21,12 +21,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (email, password, firstname, lastname) => {
+    try {
+      const response = await axios.post(
+        `https://e-commerce-test-hqul.onrender.com/users`,
+        {
+          email,
+          password,
+          firstname,
+          lastname,
+        }
+      );
+      setUser(response.data);
+    } catch (error) {
+      throw new Error("Registration failed");
+    }
+  };
   const logout = () => {
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
