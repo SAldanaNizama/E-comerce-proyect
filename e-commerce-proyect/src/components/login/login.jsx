@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const { login, register } = useAuth();
@@ -18,7 +19,7 @@ const LoginPage = () => {
 
     try {
       if (isRegistering) {
-        await register(email, password, firstname, lastname);
+        await register(email, password, firstname, lastname, username);
       } else {
         await login(email, password);
       }
@@ -60,6 +61,19 @@ const LoginPage = () => {
                   id="lastname"
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
+                  required
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="firstname" className="block text-gray-700">
+                  User Name:
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
