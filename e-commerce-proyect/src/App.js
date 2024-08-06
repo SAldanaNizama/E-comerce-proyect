@@ -10,6 +10,7 @@ import Support from "./components/about/Suport";
 import Profile from "./components/profile/Profile";
 import { AuthProvider } from "./components/login/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import CreateProductForm from "./components/create/CreateProductForm";
 import "./App.css";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/form" element={<CreateProductForm />} />
               <Route path="/products" element={<Products />} />
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<PrivateRoute />}>

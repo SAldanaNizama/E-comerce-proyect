@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password, firstname, lastname) => {
+  const register = async (email, password, firstname, lastname, username) => {
     try {
       const response = await axios.post(
         `https://e-commerce-test-hqul.onrender.com/users`,
@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
           password,
           firstname,
           lastname,
+          username,
         }
       );
       setUser(response.data);
