@@ -27,6 +27,12 @@ const Navbar = () => {
           >
             Products
           </Link>
+          <Link
+            to="/form"
+            className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+          >
+            Create form
+          </Link>
           {user ? (
             <Link
               to="/profile"
