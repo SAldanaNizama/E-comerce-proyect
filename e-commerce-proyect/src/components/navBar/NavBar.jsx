@@ -31,7 +31,7 @@ const Navbar = () => {
             to="/form"
             className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
           >
-            Create form
+            Create products
           </Link>
           {user ? (
             <Link
