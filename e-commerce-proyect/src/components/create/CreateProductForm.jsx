@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const ProductForm = () => {
   const [formData, setFormData] = useState({
@@ -9,14 +10,13 @@ const ProductForm = () => {
     stock: "",
     marcaId: "",
     subcategoryId: "",
-    images: null,
+    images: [],
   });
 
   const [marcas, setMarcas] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
-    // Fetching marcas
     const fetchMarcas = async () => {
       try {
         const response = await axios.get(
@@ -28,7 +28,6 @@ const ProductForm = () => {
       }
     };
 
-    // Fetching subcategories
     const fetchSubcategories = async () => {
       try {
         const response = await axios.get(
@@ -46,40 +45,52 @@ const ProductForm = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
-    }));
+    if (name === "images") {
+      setFormData((prevData) => ({
+        ...prevData,
+        images: [...prevData.images, ...Array.from(files)],
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("description", formData.description);
-    data.append("price", formData.price);
-    data.append("stock", formData.stock);
-    data.append("marcaId", formData.marcaId);
-    data.append("subcategoryId", formData.subcategoryId);
-    data.append("images", formData.images);
+    const storage = getStorage();
+    const imageUrls = [];
+
+    for (let i = 0; i < formData.images.length; i++) {
+      const image = formData.images[i];
+      const storageRef = ref(storage, `products/${image.name}`);
+      await uploadBytes(storageRef, image);
+      const url = await getDownloadURL(storageRef);
+      imageUrls.push(url);
+    }
+
+    const data = {
+      name: formData.name,
+      description: formData.description,
+      price: formData.price,
+      stock: formData.stock,
+      marcaId: formData.marcaId,
+      subcategoryId: formData.subcategoryId,
+      images: imageUrls,
+    };
 
     try {
       const response = await axios.post(
         "https://e-commerce-test-hqul.onrender.com/products/create",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        data
       );
       console.log("Product created:", response.data);
+      alert("Product created successfully!");
 
-      // Mostrar una alerta al usuario
-      window.alert("Product created successfully!");
-
-      // Limpiar los campos del formulario
+      // Reset form data
       setFormData({
         name: "",
         description: "",
@@ -87,10 +98,11 @@ const ProductForm = () => {
         stock: "",
         marcaId: "",
         subcategoryId: "",
-        images: null,
+        images: [],
       });
     } catch (error) {
       console.error("Error creating product:", error);
+      alert("Error creating product!");
     }
   };
 
@@ -188,7 +200,7 @@ const ProductForm = () => {
       </div>
       <div className="mb-6">
         <label className="block text-gray-700 font-bold mb-2">
-          Product Image:
+          Product Images:
         </label>
         <input
           type="file"
