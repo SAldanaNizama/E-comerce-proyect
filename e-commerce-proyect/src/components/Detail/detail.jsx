@@ -55,8 +55,8 @@ const ProductDetail = () => {
   const settingsMain = {
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: true,
-    infinite: true,
+    arrows: false,
+    infinite: false,
     asNavFor: nav2,
   };
 
