@@ -19,7 +19,7 @@ const FilterBar = ({ onFilterChange }) => {
         const [marcasResponse, subcategoriasResponse] = await Promise.all([
           axios.get("https://e-commerce-test-hqul.onrender.com/marcas"),
           axios.get("https://e-commerce-test-hqul.onrender.com/subcategories"),
-        ]);
+        ]); 
         setMarcas(marcasResponse.data);
         setSubcategorias(subcategoriasResponse.data);
       } catch (error) {
