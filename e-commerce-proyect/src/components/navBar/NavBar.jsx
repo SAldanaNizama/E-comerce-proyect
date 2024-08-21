@@ -1,4 +1,3 @@
-// src/components/Navbar.js
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../login/AuthContext";
@@ -32,6 +31,12 @@ const Navbar = () => {
             className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
           >
             Create products
+          </Link>
+          <Link
+            to="/cart"
+            className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+          >
+            Cart
           </Link>
           {user ? (
             <Link
