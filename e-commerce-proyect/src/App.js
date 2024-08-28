@@ -12,9 +12,8 @@ import { AuthProvider } from "./components/login/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateProductForm from "./components/create/CreateProductForm";
 import CartPage from "./components/Cart/CartPage"; // Importar el componente del carrito
-import { CartProvider } from "./components/Cart/CartProvider"; // Importar el provider del carrito
 import "./App.css";
-
+import { CartProvider } from "./components/Cart/CartContext";
 function App() {
   return (
     <AuthProvider>
