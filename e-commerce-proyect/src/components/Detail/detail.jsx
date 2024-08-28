@@ -6,12 +6,15 @@ import LoadingSpinner from "../loading/loading";
 import BackButton from "../backButton/BackButton";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useCart } from "../Cart/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
   const [error, setError] = useState(null);
+  const [quantity, setQuantity] = useState(1); // State for product quantity
   const fallbackImage = "/wazaStore1.png";
 
   const [nav1, setNav1] = useState(null);
@@ -34,6 +37,11 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [id]);
+
+  const handleAddToCart = () => {
+    const quantity = 1; // Aquí puedes obtener la cantidad desde algún input o control
+    addToCart(product, quantity);
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -84,7 +92,7 @@ const ProductDetail = () => {
                 <div key={index}>
                   <img
                     src={image.imageUrl}
-                    alt={`Product Image ${index + 1}`}
+                    alt={image.description || `Product ${index + 1}`}
                     className="w-full h-auto object-cover rounded-md border border-gray-600 shadow-sm"
                   />
                 </div>
@@ -126,6 +134,23 @@ const ProductDetail = () => {
                 {new Date(product.createdAt).toLocaleDateString()}
               </p>
             </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2" htmlFor="quantity">
+                Cantidad:
+              </label>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                min="1"
+                max={product.stock}
+                className="w-20 border border-gray-300 rounded p-2"
+              />
+            </div>
+
+            <button onClick={handleAddToCart}>Agregar al Carrito</button>
           </div>
         </div>
       </div>
