@@ -1,7 +1,8 @@
-// src/components/Cart/Cart.js
 import React from "react";
 import { useCart } from "./CartContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { useAuth } from "../login/AuthContext";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 const stripePromise = loadStripe(
   "pk_test_51PdkkORpT8hZfgO64b1arAK0dDmIuxUAwqT4EJRB3tYu2mGUtpMM8I0L3H0vAKfBILFKsblTZ7MxbtvOHo1xSDb300Szl6eV9D"
@@ -9,8 +10,15 @@ const stripePromise = loadStripe(
 
 const Cart = () => {
   const { cart, removeFromCart, clearCart } = useCart();
+  const { user } = useAuth(); // Obtén el estado de autenticación del contexto
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const handleCheckout = async () => {
+    if (!user) {
+      navigate("/login"); // Redirige a la página de login si no hay usuario autenticado
+      return;
+    }
+
     const stripe = await stripePromise;
 
     const productId = cart.map((item) => item.productId);
@@ -20,7 +28,6 @@ const Cart = () => {
     productId.forEach((productId) =>
       params.append("productIds", productId.toString())
     );
-    console.log(productId);
     quantitys.forEach((qty) => params.append("quantitys", qty.toString()));
 
     const response = await fetch(
@@ -32,7 +39,7 @@ const Cart = () => {
         },
       }
     );
-    console.log();
+
     const session = await response.json();
 
     await stripe.redirectToCheckout({ sessionId: session.id });
