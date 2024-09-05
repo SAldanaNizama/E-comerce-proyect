@@ -26,12 +26,17 @@ const Navbar = () => {
           >
             Products
           </Link>
-          <Link
-            to="/form"
-            className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
-          >
-            Create products
-          </Link>
+
+          {/* Solo mostrar el enlace "Create products" a usuarios con rol "admin" */}
+          {user && user.roles.some((role) => role.name === "ROLE_ADMIN") && (
+            <Link
+              to="/form"
+              className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
+            >
+              Create products
+            </Link>
+          )}
+
           <Link
             to="/cart"
             className="text-transmitir-blanco text-xl font-bold hover:text-futurista-negro"
