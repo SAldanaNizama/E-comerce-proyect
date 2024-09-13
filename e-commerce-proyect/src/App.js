@@ -29,21 +29,23 @@ function App() {
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/login" element={<Login />} />
+
                 {/* Ruta protegida para el perfil */}
                 <Route path="/profile" element={<PrivateRoute />}>
                   <Route path="" element={<Profile />} />
                 </Route>
+
                 {/* Ruta protegida para el formulario de creación de productos, solo para admin */}
                 <Route
                   path="/form"
-                  element={<PrivateRoute requiredRole="admin" />}
+                  element={<PrivateRoute requiredRole="ROLE_ADMIN" />}
                 >
                   <Route path="" element={<CreateProductForm />} />
                 </Route>
+
                 <Route path="/about" element={<About />} />
                 <Route path="/support" element={<Support />} />
-                <Route path="/cart" element={<CartPage />} />{" "}
-                {/* Ruta para el carrito */}
+                <Route path="/cart" element={<CartPage />} />
               </Routes>
             </header>
             <div className="flex-grow"></div>
