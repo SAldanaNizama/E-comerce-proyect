@@ -14,7 +14,7 @@ import CreateProductForm from "./components/create/CreateProductForm";
 import CartPage from "./components/Cart/CartPage"; // Importar el componente del carrito
 import "./App.css";
 import { CartProvider } from "./components/Cart/CartContext";
-
+import RegisterPage from "./components/login/register";
 function App() {
   return (
     <AuthProvider>
@@ -29,7 +29,7 @@ function App() {
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/login" element={<Login />} />
-
+                <Route path="/register" element={<RegisterPage />} />
                 {/* Ruta protegida para el perfil */}
                 <Route path="/profile" element={<PrivateRoute />}>
                   <Route path="" element={<Profile />} />
